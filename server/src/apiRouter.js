@@ -2,6 +2,7 @@ const express = require("express");
 const fs = require("fs");
 const path = require("path");
 const { handlePath } = require("@filebrowser/handlers");
+const { watcher } = require("./watcher");
 
 const basePath = process.cwd();
 const apiRouter = express.Router();
@@ -23,6 +24,7 @@ apiRouter.get("/dir/:dirName", (req, res) => {
   }
 
   const parsedPath = handlePath(resolvedPath, dirName);
+  watcher.add(resolvedPath);
 
   res.json({ path: parsedPath, basePath });
 });
