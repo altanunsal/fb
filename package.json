@@ -1,0 +1,13 @@
+{
+  "name": "filebrowser",
+  "version": "1.0.0",
+  "description": "File Browser",
+  "main": "index.js",
+  "author": "Altan Unsal <altanunsal@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "handlers",
+    "server"
+  ]
+}

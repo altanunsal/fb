@@ -1,0 +1,17 @@
+{
+  "name": "@filebrowser/server",
+  "version": "1.0.0",
+  "description": "simple file browser - server",
+  "main": "index.js",
+  "author": "Altan Unsal <altanunsal@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "node ./src/index.js"
+  },
+  "dependencies": {
+    "@filebrowser/handlers": "*",
+    "express": "^4.17.1",
+    "ws": "^8.2.0"
+  }
+}

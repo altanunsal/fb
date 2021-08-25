@@ -1,0 +1,9 @@
+{
+  "name": "@filebrowser/handlers",
+  "version": "1.0.0",
+  "description": "FS handlers",
+  "main": "index.js",
+  "author": "Altan Unsal <altanunsal@gmail.com>",
+  "license": "MIT",
+  "private": true
+}
