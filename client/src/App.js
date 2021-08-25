@@ -4,12 +4,12 @@ import "./App.css";
 import { Form } from "./Components/Form/Form";
 
 export function App() {
-  const [baseUrl, setBaseUrl] = useState("");
+  const [basePath, setBaseUrl] = useState("");
 
   useEffect(() => {
     async function fetchUrl() {
-      const baseUrl = await ApiService.getBaseDir();
-      setBaseUrl(baseUrl);
+      const basePath = await ApiService.getBaseDir();
+      setBaseUrl(basePath);
     }
 
     fetchUrl();
@@ -18,11 +18,14 @@ export function App() {
   return (
     <Fragment>
       <header className="App-header">
-        {baseUrl && <p>Base URL is {baseUrl}.</p>}
+        {basePath && (
+          <p>
+            Base path is {basePath}. All directories are parsed relative to the
+            base path
+          </p>
+        )}
       </header>
-      <div className="App-body">
-        <Form />
-      </div>
+      <Form />
     </Fragment>
   );
 }

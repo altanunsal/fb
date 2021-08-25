@@ -35,7 +35,7 @@ export function Form() {
     <div className="App-PathView">
       <div className="App-PathView App-Form">
         <label htmlFor="directory-input" className="App-Form__input">
-          Enter the directory you wish to get information about:
+          Enter the directory you wish to browse:
         </label>
         <input
           type="text"
@@ -59,7 +59,7 @@ export function Form() {
           />
         )}
       </div>
-      {pathInfo && <PathInfo path={pathInfo.path} />}
+      {pathInfo && <PathInfo path={pathInfo.path} isTopLevel />}
     </div>
   );
 }

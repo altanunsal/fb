@@ -9,3 +9,9 @@
 .DirectoryInfo-label {
   margin: 0 0.5em;
 }
+
+.DirectoryInfo-label:hover {
+  margin: 0 0.5em;
+  cursor: pointer;
+  text-decoration: underline;
+}
