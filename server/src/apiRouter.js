@@ -22,9 +22,9 @@ apiRouter.get("/dir/:dirName", (req, res) => {
     return;
   }
 
-  const paths = handlePath(resolvedPath, dirName);
+  const parsedPath = handlePath(resolvedPath, dirName);
 
-  res.json({ paths, basePath });
+  res.json({ path: parsedPath, basePath });
 });
 
 module.exports = {

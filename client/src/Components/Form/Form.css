@@ -1,0 +1,16 @@
+.App-PathView {
+  display: flex;
+  flex-direction: column;
+  margin: 2em;
+  max-width: 20vw;
+}
+
+.App-Form__input {
+  margin-bottom: 0.75em;
+  font-size: 1.2em;
+  padding: 0.25em;
+}
+
+.App-Form__button {
+  border-radius: 1em;
+}

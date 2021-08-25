@@ -1,25 +1,28 @@
-import logo from "./logo.svg";
+import { Fragment, useState, useEffect } from "react";
+import { ApiService } from "./API/service";
 import "./App.css";
+import { Form } from "./Components/Form/Form";
 
-function App() {
+export function App() {
+  const [baseUrl, setBaseUrl] = useState("");
+
+  useEffect(() => {
+    async function fetchUrl() {
+      const baseUrl = await ApiService.getBaseDir();
+      setBaseUrl(baseUrl);
+    }
+
+    fetchUrl();
+  });
+
   return (
-    <div className="App">
+    <Fragment>
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        {baseUrl && <p>Base URL is {baseUrl}.</p>}
       </header>
-    </div>
+      <div className="App-body">
+        <Form />
+      </div>
+    </Fragment>
   );
 }
-
-export default App;

@@ -1,0 +1,11 @@
+.DirectoryInfo-container {
+  display: flex;
+  flex-direction: row;
+  min-width: 100%;
+  font-size: 1.2em;
+  line-height: 2em;
+}
+
+.DirectoryInfo-label {
+  margin: 0 0.5em;
+}

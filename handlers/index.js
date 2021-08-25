@@ -15,6 +15,7 @@ function handleDirectory(resolvedPath, name) {
     name,
     resolvedPath,
     isDirectory: true,
+    isFile: false,
     folderContents: generateFolderContents(resolvedPath),
   };
 }
@@ -23,8 +24,9 @@ function handleFile(resolvedPath, name) {
   return {
     name,
     resolvedPath,
-    isFile: false,
+    isFile: true,
     isDirectory: false,
+    folderContents: [],
   };
 }
 
@@ -38,7 +40,7 @@ function handleUnknown(resolvedPath, name) {
 }
 
 function handlePath(resolvedPath, name) {
-  const pathStats = fs.statSync(resolvedPath);
+  const pathStats = fs.lstatSync(resolvedPath);
 
   if (pathStats.isDirectory()) {
     return handleDirectory(resolvedPath, name);

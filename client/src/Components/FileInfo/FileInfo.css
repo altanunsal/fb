@@ -1,0 +1,10 @@
+.FileInfo-container {
+  display: flex;
+  flex-direction: row;
+  font-size: 1.2em;
+  line-height: 2em;
+}
+
+.FileInfo-label {
+  margin: 0 0.5em;
+}
