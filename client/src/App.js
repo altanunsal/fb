@@ -2,6 +2,7 @@ import { Fragment, useState, useEffect } from "react";
 import { ApiService } from "./API/service";
 import "./App.css";
 import { Form } from "./Components/Form/Form";
+import "./API/socket";
 
 export function App() {
   const [basePath, setBaseUrl] = useState("");
