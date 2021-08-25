@@ -4,6 +4,6 @@ export const socket = io("http://localhost:8080", {
   transports: ["websocket"],
 });
 
-socket.on("hello", () => {
+socket.on("connect", () => {
   console.log("Websocket connection established");
 });

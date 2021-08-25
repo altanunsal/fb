@@ -1,5 +1,5 @@
-import { useCallback, useState } from "react";
-import { ApiService } from "../../API/service";
+import { useCallback, useState, useEffect } from "react";
+import { socket } from "../../API/socket";
 import { PathInfo } from "../PathInfo/PathInfo";
 import "./Form.css";
 
@@ -15,15 +15,16 @@ export function Form() {
   const onSubmit = useCallback(
     (event) => {
       event.preventDefault();
-      async function fetchPathInfo() {
-        const pathInfo = await ApiService.getPathContents(value);
-        setPathInfo(pathInfo);
-      }
-
-      fetchPathInfo();
+      socket.emit("pathInfo", value);
     },
     [value]
   );
+
+  useEffect(() => {
+    socket.on("pathInfoResult", (result) => {
+      setPathInfo(result);
+    });
+  });
 
   const onClear = useCallback((event) => {
     event.preventDefault();

@@ -1,19 +1,15 @@
 import { Fragment, useState, useEffect } from "react";
-import { ApiService } from "./API/service";
 import "./App.css";
 import { Form } from "./Components/Form/Form";
-import "./API/socket";
+import { socket } from "./API/socket";
 
 export function App() {
   const [basePath, setBaseUrl] = useState("");
 
   useEffect(() => {
-    async function fetchUrl() {
-      const basePath = await ApiService.getBaseDir();
+    socket.on("basePath", (basePath) => {
       setBaseUrl(basePath);
-    }
-
-    fetchUrl();
+    });
   });
 
   return (
