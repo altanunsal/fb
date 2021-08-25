@@ -32,7 +32,7 @@ export function DirectoryInfo({ name, folderContents }) {
         Array.isArray(folderContents) &&
         folderContents.length > 0 &&
         folderContents.map((item) => {
-          return <PathInfo path={item} />;
+          return <PathInfo path={item} key={item.name} />;
         })}
     </div>
   );
