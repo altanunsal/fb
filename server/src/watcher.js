@@ -1,12 +1,26 @@
 const chokidar = require("chokidar");
 const { handlePath } = require("@filebrowser/handlers");
 const _ = require("lodash");
+const fs = require("fs");
 
-const getHandler = (socket, resolvedPath, requestedPath) => (message) => {
-  console.log(message);
-  const parsedPath = handlePath(resolvedPath, requestedPath);
-  socket.emit("pathInfoUpdate", { parsedPath });
-};
+const getMessageEmitter =
+  (socket, resolvedPath, requestedPath) => (message) => {
+    console.log(message);
+
+    if (!fs.existsSync(resolvedPath)) {
+      // watched directory/file has been removed
+      socket.emit("pathInfoNotFound", { resolvedPath });
+      socket.emit(
+        "pathInfoError",
+        requestedPath,
+        `Specified path ${requestedPath} was removed`
+      );
+    } else {
+      // watched directory contents have changed
+      const parsedPath = handlePath(resolvedPath, requestedPath);
+      socket.emit("pathInfoUpdate", { parsedPath });
+    }
+  };
 
 function watchFiles(socket, resolvedPath, requestedPath) {
   const watcher = chokidar.watch(resolvedPath, {
@@ -14,17 +28,17 @@ function watchFiles(socket, resolvedPath, requestedPath) {
     ignoreInitial: true,
   });
 
-  const handler = _.debounce(
-    getHandler(socket, resolvedPath, requestedPath),
+  const listener = _.debounce(
+    getMessageEmitter(socket, resolvedPath, requestedPath),
     200
   );
 
   watcher
-    .on("add", (path) => handler(`File ${path} has been added`))
-    .on("addDir", (path) => handler(`Directory ${path} has been added`))
-    .on("change", (path) => handler(`File ${path} has been changed`))
-    .on("unlink", (path) => handler(`File ${path} has been removed`))
-    .on("unlinkDir", (path) => handler(`Directory ${path} has been removed`));
+    .on("add", (path) => listener(`File ${path} has been added`))
+    .on("addDir", (path) => listener(`Directory ${path} has been added`))
+    .on("change", (path) => listener(`File ${path} has been changed`))
+    .on("unlink", (path) => listener(`File ${path} has been removed`))
+    .on("unlinkDir", (path) => listener(`Directory ${path} has been removed`));
 
   watcher.add(resolvedPath);
 

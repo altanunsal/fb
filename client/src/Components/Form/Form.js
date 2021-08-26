@@ -24,6 +24,15 @@ export function Form() {
     });
   }, [socket, errors]);
 
+  useEffect(() => {
+    socket.on("pathInfoNotFound", ({ resolvedPath }) => {
+      const filteredPaths = paths.filter(
+        (path) => path.resolvedPath !== resolvedPath
+      );
+      setPaths(filteredPaths);
+    });
+  }, [socket, paths]);
+
   const onChange = useCallback((event) => {
     const value = event.target.value;
     setValue(value);
