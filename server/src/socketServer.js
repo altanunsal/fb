@@ -19,7 +19,8 @@ const getPathInfoHandler = (socket) => (requestedPath) => {
   const resolvedPathExists = fs.existsSync(resolvedPath);
 
   if (!resolvedPathExists) {
-    socket.emit("error", "Specified path not found");
+    socket.emit("pathInfoError", "Specified path not found");
+    return;
   }
 
   watchFiles(socket, resolvedPath);
