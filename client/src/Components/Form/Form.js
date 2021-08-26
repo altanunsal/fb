@@ -5,13 +5,13 @@ import "./Form.css";
 
 export function Form() {
   const [value, setValue] = useState("");
-  const [pathInfo, setPathInfo] = useState();
+  const [paths, setPaths] = useState([]);
   const [error, setError] = useState("");
   const socket = useContext(SocketContext);
 
   useEffect(() => {
     socket.on("pathInfoResult", (result) => {
-      setPathInfo(result.parsedPath);
+      setPaths(result.parsedPaths);
     });
 
     socket.on("pathInfoError", (errorMessage) => {
@@ -36,7 +36,7 @@ export function Form() {
     event.preventDefault();
     setValue("");
     setError("");
-    setPathInfo(undefined);
+    setPaths([]);
   }, []);
 
   return (
@@ -58,7 +58,7 @@ export function Form() {
           value="Submit"
           className="App-Form__input App-Form__button"
         />
-        {((value && pathInfo) || error) && (
+        {((value && paths) || error) && (
           <input
             type="submit"
             onClick={onClear}
@@ -68,7 +68,10 @@ export function Form() {
         )}
         {error && <p>{error}</p>}
       </div>
-      {pathInfo && <PathInfo path={pathInfo} isTopLevel />}
+      {paths.length > 0 &&
+        paths.map((parsedPath) => (
+          <PathInfo path={parsedPath} isTopLevel key={parsedPath.name} />
+        ))}
     </div>
   );
 }

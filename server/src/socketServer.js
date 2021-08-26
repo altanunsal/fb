@@ -12,21 +12,27 @@ const io = new WebsocketServer({
   },
 });
 
-const getPathInfoHandler = (socket) => (requestedPath) => {
-  console.log(`Handling request for ${requestedPath}`);
+const getPathInfoHandler = (socket) => (requestedPaths) => {
+  const sanitizedPaths = requestedPaths.split(",").map((value) => value.trim());
 
-  const resolvedPath = path.resolve(process.cwd(), requestedPath);
-  const resolvedPathExists = fs.existsSync(resolvedPath);
+  const parsedPaths = sanitizedPaths.map((requestedPath) => {
+    console.log(`Handling request for ${requestedPath}`);
 
-  if (!resolvedPathExists) {
-    socket.emit("pathInfoError", "Specified path not found");
-    return;
-  }
+    const resolvedPath = path.resolve(process.cwd(), requestedPath);
+    const resolvedPathExists = fs.existsSync(resolvedPath);
 
-  watchFiles(socket, resolvedPath);
-  const parsedPath = handlePath(resolvedPath, requestedPath);
+    if (!resolvedPathExists) {
+      socket.emit("pathInfoError", "Specified path not found");
+      return;
+    }
 
-  socket.emit("pathInfoResult", { parsedPath });
+    watchFiles(socket, resolvedPath);
+    const parsedPath = handlePath(resolvedPath, requestedPath);
+
+    return parsedPath;
+  });
+
+  socket.emit("pathInfoResult", { parsedPaths });
 };
 
 function initializeSockets(httpServer) {
