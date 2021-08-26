@@ -12,25 +12,27 @@ const io = new WebsocketServer({
   },
 });
 
-const getPathInfoHandler = (socket) => (requestedPaths) => {
-  const sanitizedPaths = requestedPaths.split(",").map((value) => value.trim());
+const getPathInfoListener = (socket) => (requestedPaths) => {
+  const parsedPaths = requestedPaths.split(",").reduce((values, value) => {
+    const sanitizedValue = value.trim();
+    const resolvedPath = path.resolve(process.cwd(), sanitizedValue);
 
-  const parsedPaths = sanitizedPaths.map((requestedPath) => {
-    console.log(`Handling request for ${requestedPath}`);
-
-    const resolvedPath = path.resolve(process.cwd(), requestedPath);
     const resolvedPathExists = fs.existsSync(resolvedPath);
 
     if (!resolvedPathExists) {
-      socket.emit("pathInfoError", "Specified path not found");
-      return;
+      socket.emit(
+        "pathInfoError",
+        value,
+        `Specified path ${sanitizedValue} not found`
+      );
+      return values;
     }
 
     watchFiles(socket, resolvedPath);
-    const parsedPath = handlePath(resolvedPath, requestedPath);
-
-    return parsedPath;
-  });
+    const parsedPath = handlePath(resolvedPath, sanitizedValue);
+    values.push(parsedPath);
+    return values;
+  }, []);
 
   socket.emit("pathInfoResult", { parsedPaths });
 };
@@ -41,7 +43,7 @@ function initializeSockets(httpServer) {
   io.on("connection", (socket) => {
     console.log("Websocket client connected");
     socket.emit("basePath", process.cwd());
-    socket.on("pathInfo", getPathInfoHandler(socket));
+    socket.on("pathInfo", getPathInfoListener(socket));
   });
 }
 

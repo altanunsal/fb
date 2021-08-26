@@ -4,12 +4,14 @@ import "./PathInfo.css";
 
 export function PathInfo({ path, isTopLevel }) {
   const { isDirectory, name, isFile, folderContents, resolvedPath } = path;
+
   if (isDirectory) {
     return (
       <div className="App-PathInfo">
         <DirectoryInfo
           name={isTopLevel ? resolvedPath : name}
           folderContents={folderContents}
+          resolvedPath={resolvedPath}
         />
       </div>
     );

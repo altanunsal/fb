@@ -5,7 +5,7 @@ const _ = require("lodash");
 const getHandler = (socket, resolvedPath, requestedPath) => (message) => {
   console.log(message);
   const parsedPath = handlePath(resolvedPath, requestedPath);
-  socket.emit("pathInfoResult", { parsedPath });
+  socket.emit("pathInfoUpdate", { parsedPath });
 };
 
 function watchFiles(socket, resolvedPath, requestedPath) {

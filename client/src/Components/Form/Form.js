@@ -6,18 +6,23 @@ import "./Form.css";
 export function Form() {
   const [value, setValue] = useState("");
   const [paths, setPaths] = useState([]);
-  const [error, setError] = useState("");
+  const [errors, setErrors] = useState({});
   const socket = useContext(SocketContext);
 
   useEffect(() => {
     socket.on("pathInfoResult", (result) => {
-      setPaths(result.parsedPaths);
+      if (result.parsedPaths && Array.isArray(result.parsedPaths)) {
+        setPaths(result.parsedPaths);
+      }
     });
+  }, [socket]);
 
-    socket.on("pathInfoError", (errorMessage) => {
-      setError(errorMessage);
+  useEffect(() => {
+    socket.on("pathInfoError", (path, errorMessage) => {
+      const updatedErrors = Object.assign({}, errors, { [path]: errorMessage });
+      setErrors(updatedErrors);
     });
-  });
+  }, [socket, errors]);
 
   const onChange = useCallback((event) => {
     const value = event.target.value;
@@ -35,7 +40,7 @@ export function Form() {
   const onClear = useCallback((event) => {
     event.preventDefault();
     setValue("");
-    setError("");
+    setErrors({});
     setPaths([]);
   }, []);
 
@@ -58,7 +63,7 @@ export function Form() {
           value="Submit"
           className="App-Form__input App-Form__button"
         />
-        {((value && paths) || error) && (
+        {((value && paths) || Object.keys(errors).length > 0) && (
           <input
             type="submit"
             onClick={onClear}
@@ -66,7 +71,10 @@ export function Form() {
             className="App-Form__input App-Form__button"
           />
         )}
-        {error && <p>{error}</p>}
+        {Object.keys(errors).length > 0 &&
+          Object.entries(errors).map(([path, message]) => (
+            <p key={path}>{message}</p>
+          ))}
       </div>
       {paths.length > 0 &&
         paths.map((parsedPath) => (
