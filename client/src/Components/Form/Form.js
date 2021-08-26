@@ -1,11 +1,18 @@
-import { useCallback, useState, useEffect } from "react";
-import { socket } from "../../API/socket";
+import { useCallback, useState, useEffect, useContext } from "react";
+import { SocketContext } from "../../Contexts/Socket";
 import { PathInfo } from "../PathInfo/PathInfo";
 import "./Form.css";
 
 export function Form() {
   const [value, setValue] = useState("");
   const [pathInfo, setPathInfo] = useState();
+  const socket = useContext(SocketContext);
+
+  useEffect(() => {
+    socket.on("pathInfoResult", (result) => {
+      setPathInfo(result.parsedPath);
+    });
+  });
 
   const onChange = useCallback((event) => {
     const value = event.target.value;
@@ -17,14 +24,8 @@ export function Form() {
       event.preventDefault();
       socket.emit("pathInfo", value);
     },
-    [value]
+    [socket, value]
   );
-
-  useEffect(() => {
-    socket.on("pathInfoResult", (result) => {
-      setPathInfo(result);
-    });
-  });
 
   const onClear = useCallback((event) => {
     event.preventDefault();
@@ -60,7 +61,7 @@ export function Form() {
           />
         )}
       </div>
-      {pathInfo && <PathInfo path={pathInfo.path} isTopLevel />}
+      {pathInfo && <PathInfo path={pathInfo} isTopLevel />}
     </div>
   );
 }

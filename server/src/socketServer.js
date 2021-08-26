@@ -2,7 +2,7 @@ const { handlePath } = require("@filebrowser/handlers");
 const { Server: WebsocketServer } = require("socket.io");
 const path = require("path");
 const fs = require("fs");
-const { watcher } = require("./watcher");
+const { watcher, watchFiles } = require("./watcher");
 
 const io = new WebsocketServer({
   serveClient: false,
@@ -12,20 +12,20 @@ const io = new WebsocketServer({
   },
 });
 
-const getPathInfoHandler = (socket) => (dirName) => {
-  console.log(`Handling request for ${dirName}`);
+const getPathInfoHandler = (socket) => (requestedPath) => {
+  console.log(`Handling request for ${requestedPath}`);
 
-  const resolvedPath = path.resolve(process.cwd(), dirName);
+  const resolvedPath = path.resolve(process.cwd(), requestedPath);
   const resolvedPathExists = fs.existsSync(resolvedPath);
 
   if (!resolvedPathExists) {
     socket.emit("error", "Specified path not found");
   }
 
-  const parsedPath = handlePath(resolvedPath, dirName);
-  watcher.add(resolvedPath);
+  watchFiles(socket, resolvedPath);
+  const parsedPath = handlePath(resolvedPath, requestedPath);
 
-  socket.emit("pathInfoResult", { path: parsedPath });
+  socket.emit("pathInfoResult", { parsedPath });
 };
 
 function initializeSockets(httpServer) {
