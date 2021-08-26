@@ -12,8 +12,8 @@ const getMessageEmitter =
       socket.emit("pathInfoNotFound", { resolvedPath });
       socket.emit(
         "pathInfoError",
-        requestedPath,
-        `Specified path ${requestedPath} was removed`
+        resolvedPath,
+        `Specified path ${resolvedPath} was removed`
       );
     } else {
       // watched directory contents have changed
