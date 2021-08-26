@@ -1,5 +1,5 @@
 const chokidar = require("chokidar");
-const { handlePath } = require("@filebrowser/handlers");
+const { parsePath } = require("@filebrowser/parser");
 const _ = require("lodash");
 const fs = require("fs");
 
@@ -17,7 +17,7 @@ const getMessageEmitter =
       );
     } else {
       // watched directory contents have changed
-      const parsedPath = handlePath(resolvedPath, requestedPath);
+      const parsedPath = parsePath(resolvedPath, requestedPath);
       socket.emit("pathInfoUpdate", { parsedPath });
     }
   };

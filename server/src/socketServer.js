@@ -1,4 +1,4 @@
-const { handlePath } = require("@filebrowser/handlers");
+const { parsePath } = require("@filebrowser/parser");
 const { Server: WebsocketServer } = require("socket.io");
 const path = require("path");
 const fs = require("fs");
@@ -29,7 +29,7 @@ const getPathInfoListener = (socket) => (requestedPaths) => {
     }
 
     watchFiles(socket, resolvedPath);
-    const parsedPath = handlePath(resolvedPath, sanitizedValue);
+    const parsedPath = parsePath(resolvedPath, sanitizedValue);
     values.push(parsedPath);
     return values;
   }, []);

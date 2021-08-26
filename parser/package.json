@@ -1,7 +1,7 @@
 {
-  "name": "@filebrowser/handlers",
+  "name": "@filebrowser/parser",
   "version": "1.0.0",
-  "description": "FS handlers",
+  "description": "FS parser",
   "main": "index.js",
   "author": "Altan Unsal <altanunsal@gmail.com>",
   "license": "MIT",

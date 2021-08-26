@@ -7,7 +7,7 @@
   "license": "MIT",
   "private": true,
   "workspaces": [
-    "handlers",
+    "parser",
     "server",
     "client"
   ],

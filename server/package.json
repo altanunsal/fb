@@ -10,7 +10,7 @@
     "start": "node ./src/index.js"
   },
   "dependencies": {
-    "@filebrowser/handlers": "*",
+    "@filebrowser/parser": "*",
     "chokidar": "^3.4.1",
     "cors": "^2.8.5",
     "express": "^4.17.1",

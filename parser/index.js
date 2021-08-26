@@ -6,11 +6,11 @@ function generateFolderContents(resolvedFolderPath) {
 
   return folderContent.map((contentPath) => {
     const resolvedPath = path.resolve(resolvedFolderPath, contentPath);
-    return handlePath(resolvedPath, contentPath);
+    return parsePath(resolvedPath, contentPath);
   });
 }
 
-function handleDirectory(resolvedPath, name) {
+function parseDirectory(resolvedPath, name) {
   return {
     name,
     resolvedPath,
@@ -20,7 +20,7 @@ function handleDirectory(resolvedPath, name) {
   };
 }
 
-function handleFile(resolvedPath, name) {
+function parseFile(resolvedPath, name) {
   return {
     name,
     resolvedPath,
@@ -30,7 +30,7 @@ function handleFile(resolvedPath, name) {
   };
 }
 
-function handleUnknown(resolvedPath, name) {
+function parseUnknown(resolvedPath, name) {
   return {
     name,
     resolvedPath,
@@ -39,18 +39,18 @@ function handleUnknown(resolvedPath, name) {
   };
 }
 
-function handlePath(resolvedPath, name) {
+function parsePath(resolvedPath, name) {
   const pathStats = fs.lstatSync(resolvedPath);
 
   if (pathStats.isDirectory()) {
-    return handleDirectory(resolvedPath, name);
+    return parseDirectory(resolvedPath, name);
   } else if (pathStats.isFile()) {
-    return handleFile(resolvedPath, name);
+    return parseFile(resolvedPath, name);
   } else {
-    return handleUnknown(resolvedPath, name);
+    return parseUnknown(resolvedPath, name);
   }
 }
 
 module.exports = {
-  handlePath,
+  parsePath,
 };
