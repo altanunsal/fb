@@ -3,6 +3,7 @@
   flex-direction: column;
   margin: 2em;
   max-width: 20vw;
+  min-width: 500px;
 }
 
 .App-Form__input {
