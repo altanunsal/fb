@@ -10,5 +10,11 @@
     "handlers",
     "server",
     "client"
-  ]
+  ],
+  "scripts": {
+    "start": "concurrently --prefix \"[{name}]\" --names \"Server,Client\" --prefix-colors \"green,cyan\" \"yarn --cwd server start\" \"yarn --cwd client start\""
+  },
+  "dependencies": {
+    "concurrently": "^6.2.1"
+  }
 }
