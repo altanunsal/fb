@@ -2,7 +2,7 @@ const cors = require("cors");
 const express = require("express");
 const http = require("http");
 
-const { initializeSockets } = require("./socketServer");
+const { initializeSockets } = require("./sockets");
 
 const app = express();
 const httpServer = http.createServer(app);

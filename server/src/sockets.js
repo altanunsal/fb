@@ -2,7 +2,7 @@ const { parsePath } = require("@filebrowser/parser");
 const { Server: WebsocketServer } = require("socket.io");
 const path = require("path");
 const fs = require("fs");
-const { watcher, watchFiles } = require("./watcher");
+const { watchFiles } = require("./watcher");
 
 const io = new WebsocketServer({
   serveClient: false,
